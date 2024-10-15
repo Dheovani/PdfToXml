@@ -1,9 +1,7 @@
 .container {
-    position: absolute;
-    margin: 1% 10% 2% 10%;
+    margin: 5% 10% 2% 10%;
     width: 80vw;
     color: white;
-    bottom: 30%;
 }
 
 .container h2 {

@@ -1,13 +1,12 @@
 .input-container {
-    position: absolute;
     top: 10%;
     left: 10%;
-    margin: auto;
+    margin: 5% 10% 2% 10%;
 }
 
 .input-zone {
-    min-width: 80vw;
-    min-height: 30vh ;
+    width: 80vw;
+    height: 30vh;
     border: 3px dashed #777777;
     border-radius: 10px;
     display: flex;
