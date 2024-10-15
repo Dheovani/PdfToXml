@@ -1,26 +1,25 @@
 import "../styles/output.css";
 
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useMemo } from "react";
 import { MdBrowserUpdated } from "react-icons/md";
 import { TranslationKey, useTranslation } from "./Translator";
 
 interface OutputPathInterface {
-    defaultOutputPath?: string;
+    path: string;
+    setPath: (path: string) => void;
 };
 
-const OutputPath = ({ defaultOutputPath = "C:\\PDFtoXML\\Documents"}: OutputPathInterface) => {
-    const [path, setPath] = useState(defaultOutputPath);
+const OutputPath = ({ path, setPath }: OutputPathInterface) => {
     const { language, translate } = useTranslation();
 
     const title = useMemo(() => translate(TranslationKey.SELECT_DIRECTORY), [language, translate]);
     const placeholder = useMemo(() => translate(TranslationKey.EXAMPLE_PATH), [language, translate]);
 
     const callPathSelector = useCallback(async () => {
-        const response = await window.electron.openFileDialog();
+        const response = await window.electron.openDirDialog();
 
-        if (response) {
+        if (response)
             setPath(response[0]);
-        }
     }, [setPath]);
 
     return (

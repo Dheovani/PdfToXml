@@ -6,6 +6,7 @@ const api = {}
 
 contextBridge.exposeInMainWorld('electron', {
   openFileDialog: () => ipcRenderer.invoke('dialog:openFile'),
+  openDirDialog: () => ipcRenderer.invoke('dialog:openDir'),
   getLanguage: () => ipcRenderer.invoke('get-language')
 });
 

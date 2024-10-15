@@ -170,4 +170,9 @@ ipcMain.handle('dialog:openFile', async () => {
   return canceled ? null : filePaths;
 });
 
+ipcMain.handle('dialog:openDir', async () => {
+  const { canceled, filePaths } = await dialog.showOpenDialog({ properties: ['openDirectory'] });
+  return canceled ? null : filePaths;
+});
+
 ipcMain.handle('get-language', () => currentLanguage);

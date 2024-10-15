@@ -90,6 +90,7 @@ const TranslationProvider = ({ children }) => {
         loadLanguage();
     }, [getLanguage, setLanguage]);
 
+    // TODO: Corrigir problemas com a tradução
     const translate = useCallback((key: TranslationKey, lang?: Language): string => {
         if (!lang) {
             lang = language;
