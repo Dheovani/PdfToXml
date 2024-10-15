@@ -169,7 +169,7 @@ function createLanguageMenu(): void {
 ipcMain.handle('dialog:openFile', async () => {
   const { canceled, filePaths } = await dialog.showOpenDialog({ properties: ['openFile', 'multiSelections'] });
   
-  return canceled ? null : filePaths.map(path => {
+  return canceled ? null : filePaths.filter(file => file.split(".")?.pop() == "pdf").map(path => {
     const fileName = path.split("\\")?.pop() ?? path;
     const fileContent = readFileSync(path);
 
