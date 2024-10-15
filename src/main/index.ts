@@ -24,7 +24,7 @@ function createWindow(): void {
     width: 800,
     height: 600,
     show: false,
-    autoHideMenuBar: true,
+    autoHideMenuBar: false,
     ...(process.platform === 'linux' ? { icon } : {}),
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
@@ -92,14 +92,14 @@ app.on('window-all-closed', () => {
 // In this file you can include the rest of your app"s specific main process
 // code. You can also put them in separate files and require them here.
 
-function setLanguage(language: Language) {
+function setLanguage(language: Language): void {
   currentLanguage = language;
 
   if (mainWindow)
     mainWindow.webContents.send('language-changed', language);
 }
 
-function createLanguageMenu() {
+function createLanguageMenu(): void {
   const languageMenu = Menu.buildFromTemplate([
     {
       label: 'Language',
@@ -166,6 +166,8 @@ function createLanguageMenu() {
 }
 
 ipcMain.handle('dialog:openFile', async () => {
-  const { canceled, filePaths } = await dialog.showOpenDialog({ properties: ['openDirectory'] });
+  const { canceled, filePaths } = await dialog.showOpenDialog({ properties: ['openFile', 'multiSelections'] });
   return canceled ? null : filePaths;
 });
+
+ipcMain.handle('get-language', () => currentLanguage);

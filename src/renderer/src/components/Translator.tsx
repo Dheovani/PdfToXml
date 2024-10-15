@@ -1,6 +1,8 @@
+import { createContext, useCallback, useContext, useEffect, useState } from "react";
+
 type Translations = {
     [key: string]: { [languageCode: string]: string };
-};
+}
 
 export enum Language {
     EN = 'en',
@@ -12,13 +14,18 @@ export enum Language {
     DE = 'de',
     RU = 'ru',
     HI = 'hi'
-};
+}
 
 export enum TranslationKey {
     SELECT_DIRECTORY = 'select_directory',
     EXAMPLE_PATH = 'example_path',
     DRAG_AND_DROP = 'drag_and_drop'
-};  
+}
+
+interface TranslationContextInterface {
+    language: Language,
+    translate: (key: TranslationKey, language?: Language) => string
+}
 
 const translations: Translations = {
     [TranslationKey.SELECT_DIRECTORY]: {
@@ -56,6 +63,46 @@ const translations: Translations = {
     }
 };
 
-export function translate(key: TranslationKey, language: Language): string {
-    return translations[key]?.[language] || key;
-}
+const TranslationContext = createContext<TranslationContextInterface | undefined>(undefined);
+
+export const useTranslation = (): TranslationContextInterface => {
+    const context = useContext(TranslationContext);
+
+    if (!context)
+        throw new Error('useLanguage must be used within a LanguageProvider');
+
+    return context;
+};
+
+const TranslationProvider = ({ children }) => {
+    const [language, setLanguage] = useState(Language.PT);
+
+    const getLanguage = useCallback(async (): Promise<Language> => {
+        return await window.electron.getLanguage();
+    }, []);
+
+    useEffect(() => {
+        const loadLanguage = async () => {
+            const userLanguage = await getLanguage();
+            setLanguage(userLanguage);
+        };
+
+        loadLanguage();
+    }, [getLanguage, setLanguage]);
+
+    const translate = useCallback((key: TranslationKey, lang?: Language): string => {
+        if (!lang) {
+            lang = language;
+        }
+    
+        return translations[key]?.[language] || key;
+    }, [language]);
+
+    return (
+        <TranslationContext.Provider value={{ language, translate }}>
+            {children}
+        </TranslationContext.Provider>
+    );
+};
+
+export default TranslationProvider;

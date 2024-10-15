@@ -1,8 +1,12 @@
 import { ElectronAPI } from '@electron-toolkit/preload'
+import { Language } from '@renderer/components/Translator'
 
 declare global {
   interface Window {
-    electron: ElectronAPI
-    api: unknown
+    api: unknown,
+    electron: ElectronAPI & {
+      getLanguage: () => Promise<Language>,
+      openFileDialog: () => Promise<string[]>
+    }
   }
 }

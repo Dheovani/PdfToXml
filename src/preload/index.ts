@@ -5,7 +5,8 @@ import { electronAPI } from '@electron-toolkit/preload'
 const api = {}
 
 contextBridge.exposeInMainWorld('electron', {
-  openFileDialog: () => ipcRenderer.invoke('dialog:openFile')
+  openFileDialog: () => ipcRenderer.invoke('dialog:openFile'),
+  getLanguage: () => ipcRenderer.invoke('get-language')
 });
 
 // Use `contextBridge` APIs to expose Electron APIs to

@@ -1,0 +1,60 @@
+.container {
+    position: absolute;
+    margin: 1% 10% 2% 10%;
+    width: 80vw;
+    color: white;
+    bottom: 30%;
+}
+
+.container h2 {
+    font-size: 16px;
+    font-weight: normal;
+    margin-bottom: 0;
+    padding-left: 1%;
+}
+
+.output-container {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    border: none;
+    padding: 1px;
+    width: 100%;
+}
+
+.output-path {
+    flex-grow: 2;
+    border: 1px solid black;
+    border-right: none;
+    border-radius: 5px 5px 0 0;
+    background-color: rgb(53, 53, 53);
+    width: 90%;
+    height: 25px;
+    padding-left: 10px;
+    border-radius: 5px 0 0 5px;
+    color: white;
+}
+
+input::placeholder {
+    color: white;
+    opacity: 1;
+}
+
+input:focus {
+    outline: none;
+}
+
+input:focus-within {
+    color: white;
+}
+
+.select-button {
+    border: 1px solid black;
+    border-left: none;
+    border-radius: 0% 5px 5px 0%;
+    background-color: rgb(53, 53, 53);
+}
+
+.select-button svg {
+    color: white;
+}
