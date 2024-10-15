@@ -2,6 +2,7 @@ import { app, shell, BrowserWindow, ipcMain, dialog, Menu } from 'electron';
 import { join } from 'path';
 import { electronApp, optimizer, is } from '@electron-toolkit/utils';
 import icon from '../../resources/icon.png?asset';
+import { readFileSync } from 'fs';
 
 enum Language {
   EN = 'en',
@@ -167,7 +168,13 @@ function createLanguageMenu(): void {
 
 ipcMain.handle('dialog:openFile', async () => {
   const { canceled, filePaths } = await dialog.showOpenDialog({ properties: ['openFile', 'multiSelections'] });
-  return canceled ? null : filePaths;
+  
+  return canceled ? null : filePaths.map(path => {
+    const fileName = path.split("\\")?.pop() ?? path;
+    const fileContent = readFileSync(path);
+
+    return { fileName, fileContent: fileContent.toString('base64') };
+  });
 });
 
 ipcMain.handle('dialog:openDir', async () => {

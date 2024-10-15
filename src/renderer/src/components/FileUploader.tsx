@@ -1,34 +1,37 @@
 import "../styles/uploader.css";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, DragEvent, MouseEvent } from "react";
 import { TranslationKey, useTranslation } from "./Translator";
 
 interface FileUploaderInterface {
-    inputText?: string;
-    onFilesDrop?: (event: React.DragEvent, files: File[]) => any;
+    onFilesDrop?: (event: DragEvent | MouseEvent, files: File[]) => any;
 }
 
-const FileUploader = ({ inputText = undefined, onFilesDrop = undefined }: FileUploaderInterface) => {
-    const [text, setText] = useState(inputText);
+const FileUploader = ({ onFilesDrop = undefined }: FileUploaderInterface) => {
+    const [text, setText] = useState("");
     const [files, setFiles] = useState<File[]>([]); // TODO: Implementar listagem dos arquivos
     const { language, translate } = useTranslation();
 
     useEffect(() => {
-        if (!text)
+        if (!text.length)
             setText(translate(TranslationKey.DRAG_AND_DROP));
     }, [text, setText, language, translate]);
 
-    const onClick = useCallback(async (event: React.MouseEvent) => {
+    const onClick = useCallback(async (event: MouseEvent) => {
         const response = await window.electron.openFileDialog();
 
-        if (response)
+        if (response) {
             setFiles(response);
+
+            if (onFilesDrop)
+                await onFilesDrop(event, response);
+        }
 
         event.preventDefault();
         event.stopPropagation();
     }, [setFiles, onFilesDrop]);
 
-    const handleDrop = useCallback(async (event: React.DragEvent) => {
+    const handleDrop = useCallback(async (event: DragEvent) => {
         let filelist = Object.values(event.dataTransfer.files);
         setFiles(filelist);
 

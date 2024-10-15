@@ -5,9 +5,19 @@ import { electronAPI } from '@electron-toolkit/preload'
 const api = {}
 
 contextBridge.exposeInMainWorld('electron', {
-  openFileDialog: () => ipcRenderer.invoke('dialog:openFile'),
+  getLanguage: () => ipcRenderer.invoke('get-language'),
   openDirDialog: () => ipcRenderer.invoke('dialog:openDir'),
-  getLanguage: () => ipcRenderer.invoke('get-language')
+  openFileDialog: () => ipcRenderer.invoke('dialog:openFile')
+    .then((files: Array<{ fileName: string, fileContent: string }>) => {
+      if (files) {
+        return files.map(file => {
+          const blob = new Blob([Uint8Array.from(atob(file.fileContent), c => c.charCodeAt(0))]);
+          return new File([blob], file.fileName);
+        });
+      }
+
+      return null;
+    })
 });
 
 // Use `contextBridge` APIs to expose Electron APIs to
