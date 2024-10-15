@@ -1,17 +1,31 @@
 import { useState } from "react";
 import FileUploader from "./components/FileUploader";
 import OutputPath from "./components/OutputPath";
-import TranslationProvider from "./components/Translator";
+import { TranslationKey, useTranslation } from "./components/Translator";
+
+const buttonStyle = {
+  backgroundColor: 'rgb(53, 53, 53)',
+  color: 'white',
+  display: 'flex',
+  padding: '5px 10px',
+  border: '1px solid black',
+  borderRadius: '5px',
+};
 
 function App(): JSX.Element {
   const [path, setPath] = useState("C:\\PDFtoXML\\Documents");
+  const { translate } = useTranslation();
   
   return (
-    <TranslationProvider>
+    <>
       <FileUploader />
       <OutputPath path={path} setPath={setPath} />
-    </TranslationProvider>
+
+      <div style={{ display: "flex", justifyContent: "center" }}>
+        <button style={buttonStyle}>{translate(TranslationKey.COMPUTE_DATA)}</button>
+      </div>
+    </>
   );
 }
 
-export default App
+export default App;
