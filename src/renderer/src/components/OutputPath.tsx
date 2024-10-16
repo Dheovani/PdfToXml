@@ -1,6 +1,7 @@
 import "../styles/output.css";
 
 import { useCallback, useMemo } from "react";
+import { GiBroom } from 'react-icons/gi'
 import { MdBrowserUpdated } from "react-icons/md";
 import { TranslationKey, useTranslation } from "./Translator";
 
@@ -38,6 +39,10 @@ const OutputPath = ({ path, setPath }: OutputPathInterface) => {
                 
                 <button className="select-button" onClick={() => callPathSelector()}>
                     <MdBrowserUpdated />
+                </button>
+
+                <button className="clear-button" onClick={() => setPath("")}>
+                    <GiBroom />
                 </button>
             </div>
         </div>

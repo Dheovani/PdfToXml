@@ -20,6 +20,17 @@
     width: 100%;
 }
 
+.output-container button {
+    border: 1px solid black;
+    border-right: none;
+    border-left: none;
+    background-color: rgb(53, 53, 53);
+}
+
+.output-container button svg {
+    color: white;
+}
+
 .output-path {
     flex-grow: 2;
     border: 1px solid black;
@@ -46,13 +57,7 @@ input:focus-within {
     color: white;
 }
 
-.select-button {
-    border: 1px solid black;
+.clear-button {
     border-left: none;
     border-radius: 0% 5px 5px 0%;
-    background-color: rgb(53, 53, 53);
-}
-
-.select-button svg {
-    color: white;
 }
