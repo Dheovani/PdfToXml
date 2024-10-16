@@ -14,8 +14,10 @@ const FileUploader = ({ onDropFiles }: FileUploaderInterface) => {
     const { language, translate } = useTranslation();
 
     useEffect(() => {
-        if (!text.length)
-            setText(translate(TranslationKey.DRAG_AND_DROP));
+        const newTxt = translate(TranslationKey.DRAG_AND_DROP);
+
+        if (!text.length || text != newTxt)
+            setText(newTxt);
     }, [text, setText, language, translate]);
 
     const tooltipInfo = useMemo(
@@ -39,7 +41,7 @@ const FileUploader = ({ onDropFiles }: FileUploaderInterface) => {
 
     const handleDrop = useCallback(async (event: DragEvent) => {
         let filelist = Object.values(event.dataTransfer.files);
-        setFiles(filelist);
+        setFiles(prev => prev.concat(filelist));
 
         if (onDropFiles)
             await onDropFiles(event, filelist);
