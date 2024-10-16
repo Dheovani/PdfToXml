@@ -1,4 +1,4 @@
-import { app, shell, BrowserWindow, ipcMain, dialog, Menu } from 'electron';
+import { app, shell, BrowserWindow, ipcMain, dialog, Menu, IpcMainInvokeEvent } from 'electron';
 import { join } from 'path';
 import { electronApp, optimizer, is } from '@electron-toolkit/utils';
 import icon from '../../resources/icon.png?asset';
@@ -180,6 +180,15 @@ ipcMain.handle('dialog:openFile', async () => {
 ipcMain.handle('dialog:openDir', async () => {
   const { canceled, filePaths } = await dialog.showOpenDialog({ properties: ['openDirectory'] });
   return canceled ? null : filePaths;
+});
+
+ipcMain.handle('dialog:openPath', async (event: IpcMainInvokeEvent, path: string) => {
+  const result = await shell.openPath(path);
+  event.preventDefault();
+
+  if (result) {
+    console.error('Erro ao abrir o diretório:', result);
+  }
 });
 
 ipcMain.handle('get-language', () => currentLanguage);

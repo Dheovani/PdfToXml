@@ -7,6 +7,7 @@ declare global {
     electron: ElectronAPI & {
       getLanguage: () => Promise<Language>,
       openDirDialog: () => Promise<string[] | undefined>,
+      openPathDialog: (path: string) => Promise<void>,
       openFileDialog: () => Promise<File[] | undefined>
     }
   }
