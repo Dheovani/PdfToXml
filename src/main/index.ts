@@ -96,8 +96,10 @@ app.on('window-all-closed', () => {
 function setLanguage(language: Language): void {
   currentLanguage = language;
 
-  if (mainWindow)
+  if (mainWindow) {
     mainWindow.webContents.send('language-changed', language);
+    mainWindow.reload();
+  }
 }
 
 function createLanguageMenu(): void {
