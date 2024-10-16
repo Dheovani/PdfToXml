@@ -193,4 +193,10 @@ ipcMain.handle('dialog:openPath', async (event: IpcMainInvokeEvent, path: string
   }
 });
 
+ipcMain.handle('process-data', (event: IpcMainInvokeEvent, path: string, files: Array<{ fileName: string, fileContent: string }>) => {
+  event.preventDefault();
+  // TODO: Implementar a extração dos dados dos PDFs e geração dos XMLs
+  files.forEach(f => console.log(f.fileName));
+});
+
 ipcMain.handle('get-language', () => currentLanguage);

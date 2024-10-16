@@ -21,7 +21,9 @@ const FileUploader = ({ onDropFiles }: FileUploaderInterface) => {
     }, [text, setText, language, translate]);
 
     const tooltipInfo = useMemo(
-        () => files?.length > 0 ? <ul>{files.map(file => <li>{file.name}</li>)}</ul> : null,
+        () => files?.length > 0
+            ? <ul>{files.map((file, index) => <li key={index}>{file.name}</li>)}</ul>
+            : null,
         [files]
     );
 

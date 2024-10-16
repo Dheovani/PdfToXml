@@ -20,7 +20,7 @@ export enum TranslationKey {
     SELECT_DIRECTORY = 'select_directory',
     EXAMPLE_PATH = 'example_path',
     DRAG_AND_DROP = 'drag_and_drop',
-    COMPUTE_DATA = 'compute_data',
+    PROCESS_DATA = 'process_data',
     OPEN_DIRECTORY = 'open_directory'
 }
 
@@ -63,17 +63,18 @@ const translations: Translations = {
         [Language.RU]: "Перетащите файлы сюда",
         [Language.HI]: "फ़ाइलें यहाँ खींचें और छोड़ें"
     },
-    [TranslationKey.COMPUTE_DATA]: {
-        [Language.EN]: "Compute data",
-        [Language.PT]: "Computar dados",
-        [Language.ES]: "Calcular datos",
-        [Language.ZH]: "计算数据",
-        [Language.JA]: "データを計算する",
-        [Language.FR]: "Calculer les données",
-        [Language.DE]: "Daten berechnen",
-        [Language.RU]: "Вычислить данные",
-        [Language.HI]: "डेटा की गणना करें"
-    },
+    [TranslationKey.PROCESS_DATA]: {
+        [Language.EN]: "Process data",
+        [Language.PT]: "Processar dados",
+        [Language.ES]: "Procesar datos",
+        [Language.ZH]: "处理数据",
+        [Language.JA]: "データを処理する",
+        [Language.FR]: "Traiter les données",
+        [Language.DE]: "Daten verarbeiten",
+        [Language.RU]: "Обработать данные",
+        [Language.HI]: "डेटा संसाधित करें"
+    }
+    ,
     [TranslationKey.OPEN_DIRECTORY]: {
         [Language.EN]: "Open directory",
         [Language.PT]: "Abrir diretório",
@@ -114,7 +115,6 @@ const TranslationProvider = ({ children }) => {
         loadLanguage();
     }, [language, setLanguage, getLanguage]);
 
-    // TODO: Corrigir problemas com a tradução
     const translate = useCallback((key: TranslationKey, lang?: Language): string => {
         if (!lang) {
             lang = language;
