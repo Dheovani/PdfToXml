@@ -1,16 +1,9 @@
+import "./styles/app.css";
+
 import { DragEvent, MouseEvent, useCallback, useState } from "react";
 import FileUploader from "./components/FileUploader";
 import OutputPath from "./components/OutputPath";
 import { TranslationKey, useTranslation } from "./components/Translator";
-
-const buttonStyle = {
-  backgroundColor: 'rgb(53, 53, 53)',
-  color: 'white',
-  display: 'flex',
-  padding: '5px 10px',
-  border: '1px solid black',
-  borderRadius: '5px',
-};
 
 function App(): JSX.Element {
   const [path, setPath] = useState("");
@@ -29,8 +22,8 @@ function App(): JSX.Element {
       <FileUploader onDropFiles={onDropFiles} />
       <OutputPath path={path} setPath={setPath} />
 
-      <div style={{ display: "flex", justifyContent: "center" }}>
-        <button style={buttonStyle}>{translate(TranslationKey.COMPUTE_DATA)}</button>
+      <div className="button-container">
+        <button className="data-button">{translate(TranslationKey.COMPUTE_DATA)}</button>
       </div>
     </>
   );

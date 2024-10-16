@@ -1,0 +1,13 @@
+.button-container {
+    display: flex;
+    justify-content: center;
+}
+
+.data-button {
+    background-color: rgb(53, 53, 53);
+    color: white;
+    display: flex;
+    padding: 5px 10px;
+    border: 1px solid black;
+    border-radius: 5px;
+}
