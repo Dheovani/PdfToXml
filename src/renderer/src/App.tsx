@@ -1,9 +1,11 @@
 import "./styles/app.css";
+import 'react-toastify/dist/ReactToastify.css';
 
 import { DragEvent, MouseEvent, useCallback, useState } from "react";
 import FileUploader from "./components/FileUploader";
 import OutputPath from "./components/OutputPath";
 import { TranslationKey, useTranslation } from "./components/Translator";
+import { ToastContainer, toast } from 'react-toastify';
 
 function App(): JSX.Element {
   const [path, setPath] = useState("");
@@ -18,6 +20,16 @@ function App(): JSX.Element {
   }, [setFiles]);
 
   const processData = useCallback(async () => {
+    if (path.length == 0) {
+      toast(translate(TranslationKey.PROVIDE_OUTPUT_PATH), { type: 'warning' });
+      return;
+    }
+
+    if (files.length == 0) {
+      toast(translate(TranslationKey.LOAD_PDF_FILES), { type: 'warning' });
+      return;
+    }
+
     const toBase64 = (buffer: ArrayBuffer) => {
       const bytes = new Uint8Array(buffer);
       const len = bytes.byteLength;
@@ -35,7 +47,7 @@ function App(): JSX.Element {
     })));
 
     await window.electron.processData(path, filesToSend);
-  }, [path, files]);
+  }, [path, files, translate]);
 
   const openOutputPath = useCallback(async () => {
     await window.electron.openPathDialog(path);
@@ -43,6 +55,7 @@ function App(): JSX.Element {
   
   return (
     <>
+      <ToastContainer />
       <FileUploader onDropFiles={onDropFiles} />
       <OutputPath path={path} setPath={setPath} />
 

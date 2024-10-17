@@ -21,7 +21,9 @@ export enum TranslationKey {
     EXAMPLE_PATH = 'example_path',
     DRAG_AND_DROP = 'drag_and_drop',
     PROCESS_DATA = 'process_data',
-    OPEN_DIRECTORY = 'open_directory'
+    OPEN_DIRECTORY = 'open_directory',
+    PROVIDE_OUTPUT_PATH = 'provide_output_path',
+    LOAD_PDF_FILES = 'load_pdf_files'
 }
 
 interface TranslationContextInterface {
@@ -73,8 +75,7 @@ const translations: Translations = {
         [Language.DE]: "Daten verarbeiten",
         [Language.RU]: "Обработать данные",
         [Language.HI]: "डेटा संसाधित करें"
-    }
-    ,
+    },
     [TranslationKey.OPEN_DIRECTORY]: {
         [Language.EN]: "Open directory",
         [Language.PT]: "Abrir diretório",
@@ -85,6 +86,28 @@ const translations: Translations = {
         [Language.DE]: "Verzeichnis öffnen",
         [Language.RU]: "Открыть каталог",
         [Language.HI]: "निर्देशिका खोलें"
+    },
+    [TranslationKey.PROVIDE_OUTPUT_PATH]: {
+        [Language.EN]: "Please provide an output path to save the files.",
+        [Language.PT]: "Por favor, defina um diretório para salvar os arquivos.",
+        [Language.ES]: "Por favor, proporcione un directorio para guardar los archivos.",
+        [Language.ZH]: "请提供保存文件的目录。",
+        [Language.JA]: "ファイルを保存するディレクトリを指定してください。",
+        [Language.FR]: "Veuillez fournir un répertoire pour enregistrer les fichiers.",
+        [Language.DE]: "Bitte geben Sie ein Verzeichnis zum Speichern der Dateien an.",
+        [Language.RU]: "Пожалуйста, укажите каталог для сохранения файлов.",
+        [Language.HI]: "कृपया फाइलों को सहेजने के लिए एक निर्देशिका प्रदान करें।"
+    },
+    [TranslationKey.LOAD_PDF_FILES]: {
+        [Language.EN]: "Please upload the PDF files before processing the data.",
+        [Language.PT]: "Por favor, faça o upload dos arquivos PDF antes de processar os dados.",
+        [Language.ES]: "Por favor, cargue los archivos PDF antes de procesar los datos.",
+        [Language.ZH]: "请在处理数据之前上传 PDF 文件。",
+        [Language.JA]: "データを処理する前に、PDFファイルをアップロードしてください。",
+        [Language.FR]: "Veuillez télécharger les fichiers PDF avant de traiter les données.",
+        [Language.DE]: "Bitte laden Sie die PDF-Dateien hoch, bevor Sie die Daten verarbeiten.",
+        [Language.RU]: "Пожалуйста, загрузите файлы PDF перед обработкой данных.",
+        [Language.HI]: "कृपया डेटा संसाधित करने से पहले PDF फाइलें अपलोड करें।"
     }
 };
 
