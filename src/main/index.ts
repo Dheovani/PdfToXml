@@ -98,14 +98,27 @@ function setLanguage(language: Language): void {
 
   if (mainWindow) {
     mainWindow.webContents.send('language-changed', language);
+    createLanguageMenu();
     mainWindow.reload();
   }
 }
 
 function createLanguageMenu(): void {
+  const languageLabels = {
+    [Language.EN]: "Language",
+    [Language.PT]: "Idioma",
+    [Language.ES]: "Idioma",
+    [Language.ZH]: "语言",
+    [Language.JA]: "言語",
+    [Language.FR]: "Langue",
+    [Language.DE]: "Sprache",
+    [Language.RU]: "Язык",
+    [Language.HI]: "भाषा"
+  };
+
   const languageMenu = Menu.buildFromTemplate([
     {
-      label: 'Language',
+      label: languageLabels[currentLanguage],
       submenu: [
         {
           label: 'English',
