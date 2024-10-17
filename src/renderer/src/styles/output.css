@@ -44,6 +44,12 @@
     color: white;
 }
 
+.history ul {
+    padding-left: 5%;
+    padding-right: 5px;
+    width: min-content;
+}
+
 input::placeholder {
     color: rgb(86, 86, 86);
     opacity: 1;

@@ -2,7 +2,7 @@ import { app, shell, BrowserWindow, ipcMain, dialog, Menu, IpcMainInvokeEvent } 
 import { join } from 'path';
 import { electronApp, optimizer, is } from '@electron-toolkit/utils';
 import icon from '../../resources/icon.png?asset';
-import { readFileSync } from 'fs';
+import { appendFileSync, existsSync, readFileSync, writeFileSync } from 'fs';
 
 enum Language {
   EN = 'en',
@@ -239,3 +239,31 @@ ipcMain.handle('process-data', async (
 });
 
 ipcMain.handle('get-language', () => currentLanguage);
+
+/**
+ * Arquivo que armazena os path utilizados
+ */
+const pathsFile: string = join(app.getPath('userData'), 'used-paths.txt');
+
+ipcMain.handle('save-path', (event: IpcMainInvokeEvent, path: string) => {
+  event.preventDefault();
+  const buffer = Buffer.from(path, 'utf-8');
+
+  if (existsSync(pathsFile)) {
+    appendFileSync(pathsFile, [buffer, ";"].join(";"));
+
+    const curdata = readFileSync(pathsFile);
+    if (curdata.toString().split(';').some(k => k == path))
+      return;
+  } else
+    writeFileSync(pathsFile, buffer);
+});
+
+ipcMain.handle('get-used-paths', () => {
+  if (existsSync(pathsFile)) {
+    const data = readFileSync(pathsFile);
+    return data.toString().split(';');
+  }
+  
+  return [];
+});

@@ -1,9 +1,10 @@
 import "../styles/output.css";
 
-import { useCallback, useMemo } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { GiBroom } from 'react-icons/gi'
 import { MdBrowserUpdated } from "react-icons/md";
 import { TranslationKey, useTranslation } from "./Translator";
+import Tooltip from "./Tooltip";
 
 interface OutputPathInterface {
     path: string;
@@ -11,6 +12,7 @@ interface OutputPathInterface {
 };
 
 const OutputPath = ({ path, setPath }: OutputPathInterface) => {
+    const [history, setHistory] = useState<string[]>([]);
     const { language, translate } = useTranslation();
 
     const title = useMemo(() => translate(TranslationKey.SELECT_DIRECTORY), [language, translate]);
@@ -23,19 +25,38 @@ const OutputPath = ({ path, setPath }: OutputPathInterface) => {
             setPath(response[0]);
     }, [setPath]);
 
+    const updateHistory = useCallback(async () => {
+        const response = await window.electron.getUsedPaths();
+        setHistory(response);
+    }, [setHistory]);
+
+    useEffect(() => { updateHistory(); }, [updateHistory]);
+
+    const usedPaths = useMemo(() => history.length == 0 ? null : (
+        <div className="history">
+            <ul>
+                {history.map((path: string, index: number) => (
+                    <li key={index} onClick={() => setPath(path)}>{path}</li>
+                ))}
+            </ul>
+        </div>
+    ), [history, setPath]);
+
     return (
         <div className="container">
             <h2>{title}</h2>
         
             <div className="output-container">
-                <input
-                    type="text"
-                    value={path}
-                    id="output-path"
-                    name="output-path"
-                    className="output-path"
-                    placeholder={placeholder}
-                    onChange={(e) => setPath(e.target.value)} />
+                <Tooltip info={usedPaths}>
+                    <input
+                        type="text"
+                        value={path}
+                        id="output-path"
+                        name="output-path"
+                        className="output-path"
+                        placeholder={placeholder}
+                        onChange={(e) => setPath(e.target.value)} />
+                </Tooltip>
                 
                 <button className="select-button" onClick={() => callPathSelector()}>
                     <MdBrowserUpdated />

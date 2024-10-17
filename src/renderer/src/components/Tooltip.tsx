@@ -3,7 +3,7 @@ import "../styles/tooltip.css";
 import { Tooltip as MuiTooltip, } from "@mui/material";
 
 interface TooltipInterface {
-    info: React.ReactNode;
+    info?: React.ReactNode | null;
     children: any;
 };
 

@@ -48,10 +48,12 @@ function App(): JSX.Element {
       fileContent: await file.arrayBuffer().then(buffer => toBase64(buffer)),
     })));
 
+    await window.electron.savePath(path);
     await window.electron.processData(path, password, filesToSend);
   }, [path, files, translate]);
 
   const openOutputPath = useCallback(async () => {
+    await window.electron.savePath(path);
     await window.electron.openPathDialog(path);
   }, [path]);
   
