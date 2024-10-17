@@ -244,17 +244,22 @@ ipcMain.handle('get-language', () => currentLanguage);
  * Arquivo que armazena os path utilizados
  */
 const pathsFile: string = join(app.getPath('userData'), 'used-paths.txt');
+console.log(pathsFile);
 
 ipcMain.handle('save-path', (event: IpcMainInvokeEvent, path: string) => {
   event.preventDefault();
   const buffer = Buffer.from(path, 'utf-8');
 
   if (existsSync(pathsFile)) {
-    appendFileSync(pathsFile, [buffer, ";"].join(";"));
-
     const curdata = readFileSync(pathsFile);
     if (curdata.toString().split(';').some(k => k == path))
       return;
+
+    const value = curdata.length == 0
+      ? buffer.toString()
+      : String(";").concat(buffer.toString());
+
+    appendFileSync(pathsFile, value);
   } else
     writeFileSync(pathsFile, buffer);
 });
@@ -262,7 +267,7 @@ ipcMain.handle('save-path', (event: IpcMainInvokeEvent, path: string) => {
 ipcMain.handle('get-used-paths', () => {
   if (existsSync(pathsFile)) {
     const data = readFileSync(pathsFile);
-    return data.toString().split(';');
+    return data.toString();
   }
   
   return [];

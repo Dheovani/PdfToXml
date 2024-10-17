@@ -27,10 +27,12 @@ const OutputPath = ({ path, setPath }: OutputPathInterface) => {
 
     const updateHistory = useCallback(async () => {
         const response = await window.electron.getUsedPaths();
-        setHistory(response);
+
+        if (response.length)
+            setHistory(response.split(';'));
     }, [setHistory]);
 
-    useEffect(() => { updateHistory(); }, [updateHistory]);
+    useEffect(() => { updateHistory(); });
 
     const usedPaths = useMemo(() => history.length == 0 ? null : (
         <div className="history">
