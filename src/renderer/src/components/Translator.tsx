@@ -23,7 +23,10 @@ export enum TranslationKey {
     PROCESS_DATA = 'process_data',
     OPEN_DIRECTORY = 'open_directory',
     PROVIDE_OUTPUT_PATH = 'provide_output_path',
-    LOAD_PDF_FILES = 'load_pdf_files'
+    LOAD_PDF_FILES = 'load_pdf_files',
+    PASSWORD_LABEL = 'password_label',
+    PASSWORD_PLACEHOLDER = 'password_placeholder',
+    PASSWORD_TOOLTIP = 'password_tooltip'
 }
 
 interface TranslationContextInterface {
@@ -108,7 +111,50 @@ const translations: Translations = {
         [Language.DE]: "Bitte laden Sie die PDF-Dateien hoch, bevor Sie die Daten verarbeiten.",
         [Language.RU]: "Пожалуйста, загрузите файлы PDF перед обработкой данных.",
         [Language.HI]: "कृपया डेटा संसाधित करने से पहले PDF फाइलें अपलोड करें।"
+    },
+    [TranslationKey.PASSWORD_LABEL]: {
+        [Language.EN]: "Password-protected file",
+        [Language.PT]: "Arquivo com senha",
+        [Language.ES]: "Archivo protegido con contraseña",
+        [Language.ZH]: "密码保护的文件",
+        [Language.JA]: "パスワード保護されたファイル",
+        [Language.FR]: "Fichier protégé par mot de passe",
+        [Language.DE]: "Kennwortgeschützte Datei",
+        [Language.RU]: "Файл, защищённый паролем",
+        [Language.HI]: "पासवर्ड-संरक्षित फ़ाइल"
+    },
+    [TranslationKey.PASSWORD_PLACEHOLDER]: {
+        [Language.EN]: "Enter your password",
+        [Language.PT]: "Digite sua senha",
+        [Language.ES]: "Ingrese su contraseña",
+        [Language.ZH]: "输入你的密码",
+        [Language.JA]: "パスワードを入力してください",
+        [Language.FR]: "Entrez votre mot de passe",
+        [Language.DE]: "Geben Sie Ihr Passwort ein",
+        [Language.RU]: "Введите ваш пароль",
+        [Language.HI]: "अपना पासवर्ड दर्ज करें"
+    },
+    [TranslationKey.PASSWORD_TOOLTIP]: {
+        [Language.EN]: "If the PDF files are password-protected, you need to enable this field and enter the password. "
+        + "Please ensure that the file passwords are standard.",
+        [Language.PT]: "Se os arquivos PDF possuírem senhas, é necessário habilitar esse campo e inserir a senha. "
+            + "Por favor, garanta que a senha dos arquivos seja padrão.",
+        [Language.ES]: "Si los archivos PDF tienen contraseñas, debe habilitar este campo e ingresar la contraseña. "
+            + "Por favor, asegúrese de que las contraseñas de los archivos sean estándar.",
+        [Language.ZH]: "如果PDF文件有密码, 您需要启用此字段并输入密码。"
+            + "请确保文件密码为标准密码。",
+        [Language.JA]: "PDFファイルにパスワードが設定されている場合、このフィールドを有効にしてパスワードを入力してください。"
+            + "ファイルのパスワードが標準的なものであることを確認してください。",
+        [Language.FR]: "Si les fichiers PDF sont protégés par un mot de passe, vous devez activer ce champ et saisir le mot de passe. "
+            + "Veuillez vous assurer que les mots de passe des fichiers sont standard.",
+        [Language.DE]: "Wenn die PDF-Dateien passwortgeschützt sind, müssen Sie dieses Feld aktivieren und das Passwort eingeben. "
+            + "Bitte stellen Sie sicher, dass die Passwörter der Dateien Standard sind.",
+        [Language.RU]: "Если PDF-файлы защищены паролем, необходимо включить это поле и ввести пароль. "
+            + "Пожалуйста, убедитесь, что пароли файлов являются стандартными.",
+        [Language.HI]: "यदि PDF फ़ाइलों में पासवर्ड हैं, तो आपको इस फ़ील्ड को सक्षम करना होगा और पासवर्ड दर्ज करना होगा। "
+            + "कृपया सुनिश्चित करें कि फ़ाइल पासवर्ड मानक हैं।"
     }
+    
 };
 
 const TranslationContext = createContext<TranslationContextInterface | undefined>(undefined);

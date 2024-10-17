@@ -27,7 +27,7 @@ const OutputPath = ({ path, setPath }: OutputPathInterface) => {
         <div className="container">
             <h2>{title}</h2>
         
-            <div className="output-container">            
+            <div className="output-container">
                 <input
                     type="text"
                     value={path}

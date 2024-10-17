@@ -6,9 +6,11 @@ import FileUploader from "./components/FileUploader";
 import OutputPath from "./components/OutputPath";
 import { TranslationKey, useTranslation } from "./components/Translator";
 import { ToastContainer, toast } from 'react-toastify';
+import PasswordField from "./components/Password";
 
 function App(): JSX.Element {
   const [path, setPath] = useState("");
+  const [password, setPassword] = useState("");
   const [files, setFiles] = useState<File[]>([]);
   const { translate } = useTranslation();
 
@@ -57,6 +59,7 @@ function App(): JSX.Element {
     <>
       <ToastContainer />
       <FileUploader onDropFiles={onDropFiles} />
+      <PasswordField password={password} setPassword={setPassword} />
       <OutputPath path={path} setPath={setPath} />
 
       <div className="button-container">
