@@ -11,7 +11,8 @@ interface FilesInterface {
 
 contextBridge.exposeInMainWorld('electron', {
   getLanguage: () => ipcRenderer.invoke('get-language'),
-  processData: (path: string, files: Array<FilesInterface>) => ipcRenderer.invoke('process-data', path, files),
+  processData: (path: string, password: string, files: Array<FilesInterface>) => ipcRenderer
+    .invoke('process-data', path, password, files),
   openDirDialog: () => ipcRenderer.invoke('dialog:openDir'),
   openPathDialog: (path: string) => ipcRenderer.invoke('dialog:openPath', path),
   openFileDialog: () => ipcRenderer.invoke('dialog:openFile')

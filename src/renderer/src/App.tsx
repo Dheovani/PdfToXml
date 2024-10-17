@@ -48,7 +48,7 @@ function App(): JSX.Element {
       fileContent: await file.arrayBuffer().then(buffer => toBase64(buffer)),
     })));
 
-    await window.electron.processData(path, filesToSend);
+    await window.electron.processData(path, password, filesToSend);
   }, [path, files, translate]);
 
   const openOutputPath = useCallback(async () => {

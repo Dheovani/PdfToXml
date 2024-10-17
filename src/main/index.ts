@@ -193,10 +193,36 @@ ipcMain.handle('dialog:openPath', async (event: IpcMainInvokeEvent, path: string
   }
 });
 
-ipcMain.handle('process-data', (event: IpcMainInvokeEvent, path: string, files: Array<{ fileName: string, fileContent: string }>) => {
+ipcMain.handle('process-data', async (
+  event: IpcMainInvokeEvent,
+  path: string, // TODO: Salvar o arquivo XML no caminho correto
+  password: string,
+  files: Array<{ fileName: string, fileContent: string }>
+) => {
+  const pdfjsLib = await import('pdfjs-dist');
+  const { getDocument } = pdfjsLib;
+
+  const buffers = files.map(file => Buffer.from(file.fileContent, 'base64'));
+  const uint8Arrays = buffers.map(buffer => new Uint8Array(buffer));
+  const tasks = await Promise.all(uint8Arrays.map(uint8Array => getDocument({ data: uint8Array, password })));
+
+  tasks.forEach(async task => {
+    const pdfDocument = await task.promise;
+    let fullText = '';
+
+    for (let i = 1; i <= pdfDocument.numPages; i++) {
+      const page = await pdfDocument.getPage(i);
+      const textContent = await page.getTextContent();
+
+      const pageText = textContent.items.map((item: any) => item.str).join(' ');
+      fullText += pageText + '\n';
+    }
+
+    // TODO: Implementar a geração dos XMLs
+    console.log(fullText);
+  });
+
   event.preventDefault();
-  // TODO: Implementar a extração dos dados dos PDFs e geração dos XMLs
-  files.forEach(f => console.log(f.fileName));
 });
 
 ipcMain.handle('get-language', () => currentLanguage);
