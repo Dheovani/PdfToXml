@@ -28,6 +28,11 @@ const PasswordField = ({ password, setPassword }: PasswordFieldInterface) => {
 
     const onChange = useCallback((value: string) => setPassword(value), [password, setPassword]);
 
+    const disablePasswordField = useCallback(() => {
+        setEnabled(!enabled);
+        setPassword("");
+    }, [enabled, setEnabled, setPassword]);
+
     const passwordButtons = useMemo(() => (
         <>
             <button className="view-button" onClick={() => setShow(!show)}>
@@ -47,7 +52,7 @@ const PasswordField = ({ password, setPassword }: PasswordFieldInterface) => {
                 name="enabled"
                 type="checkbox"
                 checked={enabled}
-                onChange={() => setEnabled(!enabled)} />
+                onChange={disablePasswordField} />
                 
             <label htmlFor="enabled">{translate(TranslationKey.PASSWORD_LABEL)}</label>
 
