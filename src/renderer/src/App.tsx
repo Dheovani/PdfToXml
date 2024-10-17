@@ -54,7 +54,7 @@ function App(): JSX.Element {
 
   const openOutputPath = useCallback(async () => {
     await window.electron.savePath(path);
-    await window.electron.openPathDialog(path);
+    await window.electron.revealInExplorer(path);
   }, [path]);
   
   return (

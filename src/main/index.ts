@@ -197,7 +197,7 @@ ipcMain.handle('dialog:openDir', async () => {
   return canceled ? null : filePaths;
 });
 
-ipcMain.handle('dialog:openPath', async (event: IpcMainInvokeEvent, path: string) => {
+ipcMain.handle('dialog:reveal', async (event: IpcMainInvokeEvent, path: string) => {
   const result = await shell.openPath(path);
   event.preventDefault();
 
@@ -241,7 +241,7 @@ ipcMain.handle('process-data', async (
 ipcMain.handle('get-language', () => currentLanguage);
 
 /**
- * Arquivo que armazena os path utilizados
+ * File that stores the paths already used
  */
 const pathsFile: string = join(app.getPath('userData'), 'used-paths.txt');
 console.log(pathsFile);

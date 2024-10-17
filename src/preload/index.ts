@@ -10,13 +10,34 @@ interface FilesInterface {
 }
 
 contextBridge.exposeInMainWorld('electron', {
+  /**
+   * Returns the system's current language
+   */
   getLanguage: () => ipcRenderer.invoke('get-language'),
+  /**
+   * Gets paths history from pathsFile
+   */
   getUsedPaths: () => ipcRenderer.invoke('get-used-paths'),
+  /**
+   * Inserts a new path in the pathsFile
+   */
   savePath: (path: string) => ipcRenderer.invoke('save-path', path),
+  /**
+   * Extracts the data from the pdf files and generates the XML file in a given path
+   */
   processData: (path: string, password: string, files: Array<FilesInterface>) => ipcRenderer
     .invoke('process-data', path, password, files),
+  /**
+   * Opens a dialog to select a directory
+   */
   openDirDialog: () => ipcRenderer.invoke('dialog:openDir'),
-  openPathDialog: (path: string) => ipcRenderer.invoke('dialog:openPath', path),
+  /**
+   * Reveals a given path in fileExplorer
+   */
+  revealInExplorer: (path: string) => ipcRenderer.invoke('dialog:reveal', path),
+  /**
+   * Opens a dialog to select one or more files
+   */
   openFileDialog: () => ipcRenderer.invoke('dialog:openFile')
     .then((files: Array<FilesInterface>) => {
       if (files) {

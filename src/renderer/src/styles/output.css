@@ -50,6 +50,11 @@
     width: min-content;
 }
 
+.history ul li {
+    margin-bottom: 5px;
+    cursor: pointer;
+}
+
 input::placeholder {
     color: rgb(86, 86, 86);
     opacity: 1;
