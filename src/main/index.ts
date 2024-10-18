@@ -3,6 +3,7 @@ import { join } from 'path';
 import { electronApp, optimizer, is } from '@electron-toolkit/utils';
 import icon from '../../resources/icon.png?asset';
 import { appendFileSync, existsSync, readFileSync, writeFileSync } from 'fs';
+import { TextContent } from 'pdfjs-dist/types/src/display/text_layer';
 
 enum Language {
   EN = 'en',
@@ -206,6 +207,39 @@ ipcMain.handle('dialog:reveal', async (event: IpcMainInvokeEvent, path: string) 
   }
 });
 
+/**
+ * Extracts all lines in a given page
+ */
+function extractLines(content: TextContent): Array<string>
+{
+  const lines: Array<string> = [];
+  let currentLine: string = '';
+  let lastY = null;
+
+  content.items.forEach((item: any) => {
+    const currentY = item.transform[5]; // Y pos
+    
+    if (lastY === null) {
+      lastY = currentY;
+    }
+
+    // Y pos changed
+    if (Math.abs(currentY - (lastY ?? currentY)) > 5) {
+      lines.push(currentLine.trim());
+      currentLine = '';
+    }
+
+    currentLine += item.str + ' ';
+    lastY = currentY;
+  });
+
+  if (currentLine.trim() !== '') {
+    lines.push(currentLine.trim());
+  }
+
+  return lines;
+}
+
 ipcMain.handle('process-data', async (
   event: IpcMainInvokeEvent,
   path: string, // TODO: Salvar o arquivo XML no caminho correto
@@ -221,20 +255,18 @@ ipcMain.handle('process-data', async (
 
   tasks.forEach(async task => {
     const pdfDocument = await task.promise;
-    let fullText = '';
 
     for (let i = 1; i <= pdfDocument.numPages; i++) {
       const page = await pdfDocument.getPage(i);
       const textContent = await page.getTextContent();
+      const lines = extractLines(textContent);
 
-      const pageText = textContent.items.map((item: any) => item.str).join(' ');
-      fullText += pageText + '\n';
+      console.log(lines);
+      // TODO: Extrair conteúdo das linhas
     }
-
-    // TODO: Implementar a geração dos XMLs
-    console.log(fullText);
   });
 
+  // TODO: Gerar o xml no diretório escolhido
   event.preventDefault();
 });
 
