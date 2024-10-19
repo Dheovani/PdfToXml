@@ -13,12 +13,6 @@ interface PasswordFieldInterface {
     setPassword: (password: string) => void;
 }
 
-const disabledStyle = {
-    border: '1px solid black',
-    borderRadius: '5px',
-    opacity: 0.5
-};
-
 const PasswordField = ({ password, setPassword }: PasswordFieldInterface) => {
     const [show, setShow] = useState(false);
     const [enabled, setEnabled] = useState(false);
@@ -70,7 +64,6 @@ const PasswordField = ({ password, setPassword }: PasswordFieldInterface) => {
                     name="password-field"
                     className="password-field"
                     disabled={!enabled}
-                    style={enabled ? {} : disabledStyle}
                     placeholder={translate(TranslationKey.PASSWORD_PLACEHOLDER)}
                     onChange={(e) => onChange(e.target.value)} />
 

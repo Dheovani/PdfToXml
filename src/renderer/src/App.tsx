@@ -53,6 +53,11 @@ function App(): JSX.Element {
   }, [path, files, translate]);
 
   const openOutputPath = useCallback(async () => {
+    if (path.length == 0) {
+      toast(translate(TranslationKey.PROVIDE_OUTPUT_PATH), { type: 'warning' });
+      return;
+    }
+
     await window.electron.savePath(path);
     await window.electron.revealInExplorer(path);
   }, [path]);
@@ -65,9 +70,12 @@ function App(): JSX.Element {
       <OutputPath path={path} setPath={setPath} />
 
       <div className="button-container">
-        <button className="data-button" onClick={processData}>{translate(TranslationKey.PROCESS_DATA)}</button>
-        {path.length > 0 &&
-        <button className="data-button" onClick={openOutputPath}>{translate(TranslationKey.OPEN_DIRECTORY)}</button>}
+        <button className="data-button" disabled={path.length == 0 || files.length == 0} onClick={processData}>
+          {translate(TranslationKey.PROCESS_DATA)}
+        </button>
+        <button className="data-button" disabled={path.length == 0} onClick={openOutputPath}>
+          {translate(TranslationKey.OPEN_DIRECTORY)}
+        </button>
       </div>
     </>
   );

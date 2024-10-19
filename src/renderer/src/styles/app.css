@@ -11,3 +11,8 @@
     border: 1px solid black;
     border-radius: 5px;
 }
+
+.data-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
