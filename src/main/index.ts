@@ -233,7 +233,7 @@ ipcMain.handle('dialog:reveal', async (event: IpcMainInvokeEvent, path: string) 
   event.preventDefault();
 
   if (result) {
-    console.error('Erro ao abrir o diretório:', result);
+    console.error(`Failed opening dir ${path}`, result);
   }
 });
 
@@ -337,7 +337,12 @@ ipcMain.handle('process-data', async (
   });
 
   // TODO: Gerar o xml no diretório escolhido
+  const result = await shell.openPath(path);
   event.preventDefault();
+
+  if (result) {
+    console.error(`Failed opening dir ${path}`, result);
+  }
 });
 
 ipcMain.handle('get-language', () => currentLanguage);
@@ -346,7 +351,6 @@ ipcMain.handle('get-language', () => currentLanguage);
  * File that stores the paths already used
  */
 const pathsFile: string = join(app.getPath('userData'), 'used-paths.txt');
-console.log(pathsFile);
 
 ipcMain.handle('save-path', (event: IpcMainInvokeEvent, path: string) => {
   event.preventDefault();
