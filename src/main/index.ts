@@ -5,6 +5,21 @@ import icon from '../../resources/icon.png?asset';
 import { appendFileSync, existsSync, readFileSync, writeFileSync } from 'fs';
 import { TextContent } from 'pdfjs-dist/types/src/display/text_layer';
 
+/**
+ * Interface representing the format of the pdf file content
+ */
+interface PdfFormatInterface {
+  date: string,
+  description: string,
+  doc: string | null,
+  value: number | null,
+  dc: string | null,
+  value2: number | null
+}
+
+/**
+ * Avaiable languages for translation
+ */
 enum Language {
   EN = 'en',
   PT = 'pt',
@@ -19,6 +34,21 @@ enum Language {
 
 let mainWindow: BrowserWindow | null = null;
 let currentLanguage: Language = Language.PT;
+
+/**
+ * Regex representing the items of the 'PdfFormatInterface':
+ * {
+ *    date: (\d{2}\/\d{2}\/\d{4}) - [REQUIRED] Accepts the data format dd/mm/yyyy,
+ *    description: (.+?) - [REQUIRED] Accepts and undefined amount of any characters,
+ *    doc: (\d{12})? - [OPTIONAL] Accepts up to twelve digits,
+ *    value: ([\d.,]+)? - [OPTIONAL] Accepts one or more digits, dots and semicolons,
+ *    cd: ([CD]\s)? - [OPTIONAL] Accepts only the characters 'C' or 'D',
+ *    value2: ([\d.,]+)? - [OPTIONAL] Accepts one or more digits, dots and semicolons
+ * }
+ * 
+ * @see PdfFormatInterface
+ */
+const PDF_REGEX_PATTERN = /(\d{2}\/\d{2}\/\d{4})+(.+?)\s+(\d{12})?\s+([\d.,]+)?\s+([CD]\s)?([\d.,]+)?/g;
 
 function createWindow(): void {
   // Create the browser window.
@@ -208,10 +238,46 @@ ipcMain.handle('dialog:reveal', async (event: IpcMainInvokeEvent, path: string) 
 });
 
 /**
+ * Parses a given line into a 'PdfFormatInterface' object
+ * @see PdfFormatInterface
+ */
+function parseData(line: string): Array<PdfFormatInterface> {
+  const results: Array<PdfFormatInterface> = [];
+  const isValidDate = (date: string): boolean => /^\d{2}\/\d{2}\/\d{4}$/.test(date);
+  const isValidValue = (value: string | null): boolean => value ? /^[\d.,]+$/.test(value) : false;
+
+  let match;
+  while ((match = PDF_REGEX_PATTERN.exec(line)) !== null) {
+    let [_, date, description, doc, value, dc, value2] = match;
+
+    if (!isValidDate(date)) {
+      continue;
+    }
+
+    if (!isValidValue(value) && !dc) {
+      description += ` ${doc ?? ''}`;
+      doc = null;
+      value = null;
+      dc = null;
+    }
+
+    results.push({
+      date: date.trim(),
+      description: description.trim(),
+      doc: doc ? doc.trim() : null,
+      value: value ? parseFloat(value.replace('.', '').replace(',', '.')) : null,
+      dc: dc ? dc.trim() : null,
+      value2: value2 ? parseFloat(value2.replace('.', '').replace(',', '.')) : null,
+    });
+  }
+
+  return results;
+}
+
+/**
  * Extracts all lines in a given page
  */
-function extractLines(content: TextContent): Array<string>
-{
+function extractLines(content: TextContent): Array<string> {
   const lines: Array<string> = [];
   let currentLine: string = '';
   let lastY = null;
@@ -252,6 +318,7 @@ ipcMain.handle('process-data', async (
   const buffers = files.map(file => Buffer.from(file.fileContent, 'base64'));
   const uint8Arrays = buffers.map(buffer => new Uint8Array(buffer));
   const tasks = await Promise.all(uint8Arrays.map(uint8Array => getDocument({ data: uint8Array, password })));
+  const rows: Array<PdfFormatInterface> = [];
 
   tasks.forEach(async task => {
     const pdfDocument = await task.promise;
@@ -261,8 +328,11 @@ ipcMain.handle('process-data', async (
       const textContent = await page.getTextContent();
       const lines = extractLines(textContent);
 
-      console.log(lines);
-      // TODO: Extrair conteúdo das linhas
+      lines.forEach(line => {
+        let data: Array<PdfFormatInterface> = [];
+        if ((data = parseData(line)).length > 0)
+          rows.push(...data);
+      });
     }
   });
 
