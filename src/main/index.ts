@@ -42,13 +42,13 @@ let currentLanguage: Language = Language.PT;
  *    description: (.+?) - [REQUIRED] Accepts and undefined amount of any characters,
  *    doc: (\d{12})? - [OPTIONAL] Accepts up to twelve digits,
  *    value: ([\d.,]+)? - [OPTIONAL] Accepts one or more digits, dots and semicolons,
- *    dc: ([CD]\s)? - [OPTIONAL] Accepts only the characters 'C' or 'D',
+ *    dc: ([CD])? - [OPTIONAL] Accepts only the characters 'C' or 'D',
  *    value2: ([\d.,]+)? - [OPTIONAL] Accepts one or more digits, dots and semicolons
  * }
  * 
  * @see PdfFormatInterface
  */
-const PDF_REGEX_PATTERN = /(\d{2}\/\d{2}\/\d{4})+(.+?)\s+(\d{12})?\s+([\d.,]+)?\s+([CD]\s)?([\d.,]+)?/g;
+const PDF_REGEX_PATTERN = /(\d{2}\/\d{2}\/\d{4})\s+(.+?)\s+(\d{12})?\s*([\d.,]+)?\s*([CD])?\s*([\d.,]+)?\s*$/gm;
 
 function createWindow(): void {
   // Create the browser window.
@@ -261,6 +261,12 @@ function parseData(line: string): Array<PdfFormatInterface> {
       dc = null;
     }
 
+    if (value && !doc && !dc && !value2) {
+      const aux = value;
+      value = value2;
+      value2 = aux;
+    }
+
     results.push({
       date: date.trim(),
       description: description.trim(),
@@ -308,10 +314,11 @@ function extractLines(content: TextContent): Array<string> {
 
 ipcMain.handle('process-data', async (
   event: IpcMainInvokeEvent,
-  path: string, // TODO: Salvar o arquivo XML no caminho correto
+  path: string,
   password: string,
   files: Array<{ fileName: string, fileContent: string }>
 ) => {
+  event.preventDefault();
   const pdfjsLib = await import('pdfjs-dist');
   const { getDocument } = pdfjsLib;
 
@@ -334,15 +341,14 @@ ipcMain.handle('process-data', async (
           rows.push(...data);
       });
     }
+
+    // generateXLS(path, rows);
+    const result = await shell.openPath(path);
+  
+    if (result) {
+      console.error(`Failed opening dir ${path}`, result);
+    }
   });
-
-  // TODO: Gerar o xml no diretório escolhido
-  const result = await shell.openPath(path);
-  event.preventDefault();
-
-  if (result) {
-    console.error(`Failed opening dir ${path}`, result);
-  }
 });
 
 ipcMain.handle('get-language', () => currentLanguage);
