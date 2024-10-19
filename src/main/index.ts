@@ -320,12 +320,12 @@ function generateXLS(outputPath: string, rows: Array<PdfFormatInterface>): void 
   const data = [
     ['DATA', 'DESCRIÇÃO', 'DOC', 'VALOR', 'D/C', 'VALOR'],
     ...rows.map(row => [
-      row.date || '', 
-      row.description || '', 
-      row.doc || '', 
-      row.value || '', 
-      row.dc || '', 
-      row.value2 || ''
+      row.date || '',
+      row.description || '',
+      row.doc || '',
+      row.value === null ? null : row.value.toFixed(2),
+      row.dc || '',
+      row.value2 === null ? null : row.value2.toFixed(2),
     ])
   ];
 
