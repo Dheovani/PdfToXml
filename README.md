@@ -1,34 +1,30 @@
-# pdftoxml
+# 🗂️ PDF to XML Converter
 
-An Electron application with React and TypeScript
+Welcome to the PDF to XML Converter! This tool allows you to process multiple PDFs based on custom formats defined in the PdfFormatInterface, extract relevant data, and convert it into a corresponding XML file.
 
-## Recommended IDE Setup
+## ✨ Features
 
-- [VSCode](https://code.visualstudio.com/) + [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) + [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
+- 📄 Supports multiple PDF formats: Define formats via the PdfFormatInterface.
+- 🛠️ Flexible Data Extraction: Extract data fields in various ways, depending on the structure of the PDF.
+- 🖨️ Generate XML: Outputs structured data in XML format for easy integration with other systems.
+- 🔄 Efficient processing: Handles large batches of PDFs for smooth and quick data extraction.
 
-## Project Setup
+## 🏗️ How It Works
 
-### Install
+- Define a PDF format: Implement the PdfFormatInterface to specify how to extract the data from your specific PDF format.
+- Process PDFs: Upload or pass in your PDF files.
+- Generate XML: The system will extract data and produce the corresponding XML output.
 
-```bash
-$ npm install
-```
+## 📦 Installation
 
-### Development
-
-```bash
-$ npm run dev
-```
-
-### Build
+Clone the repository and install dependencies:
 
 ```bash
-# For windows
-$ npm run build:win
-
-# For macOS
-$ npm run build:mac
-
-# For Linux
-$ npm run build:linux
+git clone https://github.com/Dheovani/PdfToXml.git
+cd PdfToXml
+npm install
 ```
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
