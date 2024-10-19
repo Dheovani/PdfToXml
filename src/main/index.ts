@@ -4,6 +4,7 @@ import { electronApp, optimizer, is } from '@electron-toolkit/utils';
 import icon from '../../resources/icon.png?asset';
 import { appendFileSync, existsSync, readFileSync, writeFileSync } from 'fs';
 import { TextContent } from 'pdfjs-dist/types/src/display/text_layer';
+import * as XLSX from 'xlsx';
 
 /**
  * Interface representing the format of the pdf file content
@@ -312,6 +313,32 @@ function extractLines(content: TextContent): Array<string> {
   return lines;
 }
 
+/**
+ * Generates the XLS containg the extracted data
+ */
+function generateXLS(outputPath: string, rows: Array<PdfFormatInterface>): void {
+  const data = [
+    ['DATA', 'DESCRIÇÃO', 'DOC', 'VALOR', 'D/C', 'VALOR'],
+    ...rows.map(row => [
+      row.date || '', 
+      row.description || '', 
+      row.doc || '', 
+      row.value || '', 
+      row.dc || '', 
+      row.value2 || ''
+    ])
+  ];
+
+  const worksheet = XLSX.utils.aoa_to_sheet(data);
+  const workbook = XLSX.utils.book_new();
+
+  XLSX.utils.book_append_sheet(workbook, worksheet, 'Extratos');
+
+  const xlsContent = XLSX.write(workbook, { type: 'binary', bookType: 'xls' });
+
+  writeFileSync(`${outputPath}\\worksheet.xls`, xlsContent, 'binary');
+}
+
 ipcMain.handle('process-data', async (
   event: IpcMainInvokeEvent,
   path: string,
@@ -342,7 +369,7 @@ ipcMain.handle('process-data', async (
       });
     }
 
-    // generateXLS(path, rows);
+    generateXLS(path, rows);
     const result = await shell.openPath(path);
   
     if (result) {
