@@ -5,12 +5,12 @@ import { TranslationKey, useTranslation } from "./Translator";
 import Tooltip from "./Tooltip";
 
 interface FileUploaderInterface {
-    onDropFiles: (event: DragEvent | MouseEvent, files: File[]) => any;
+    files: File[];
+    setFiles: (files: File[]) => void;
 }
 
-const FileUploader = ({ onDropFiles }: FileUploaderInterface) => {
+const FileUploader = ({ files, setFiles }: FileUploaderInterface) => {
     const [text, setText] = useState("");
-    const [files, setFiles] = useState<File[]>([]);
     const { language, translate } = useTranslation();
 
     useEffect(() => {
@@ -30,27 +30,20 @@ const FileUploader = ({ onDropFiles }: FileUploaderInterface) => {
     const onClick = useCallback(async (event: MouseEvent) => {
         const response = await window.electron.openFileDialog();
 
-        if (response) {
+        if (response)
             setFiles(response);
-
-            if (onDropFiles)
-                await onDropFiles(event, response);
-        }
 
         event.preventDefault();
         event.stopPropagation();
-    }, [setFiles, onDropFiles]);
+    }, [setFiles]);
 
     const handleDrop = useCallback(async (event: DragEvent) => {
         let filelist = Object.values(event.dataTransfer.files);
-        setFiles(prev => prev.concat(filelist));
-
-        if (onDropFiles)
-            await onDropFiles(event, filelist);
+        setFiles(files.concat(filelist));
 
         event.preventDefault();
         event.stopPropagation();
-    }, [setFiles, onDropFiles]);
+    }, [setFiles]);
 
     const handleDrag = useCallback((event: DragEvent) => {
         event.preventDefault();

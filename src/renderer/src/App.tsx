@@ -1,7 +1,7 @@
 import "./styles/app.css";
 import 'react-toastify/dist/ReactToastify.css';
 
-import { DragEvent, MouseEvent, useCallback, useState } from "react";
+import { useCallback, useState } from "react";
 import FileUploader from "./components/FileUploader";
 import OutputPath from "./components/OutputPath";
 import { TranslationKey, useTranslation } from "./components/Translator";
@@ -13,13 +13,6 @@ function App(): JSX.Element {
   const [password, setPassword] = useState("");
   const [files, setFiles] = useState<File[]>([]);
   const { translate } = useTranslation();
-
-  const onDropFiles = useCallback((event: DragEvent | MouseEvent, files: File[]) => {
-    setFiles(files);
-
-    event.preventDefault();
-    event.stopPropagation();
-  }, [setFiles]);
 
   const processData = useCallback(async () => {
     if (path.length == 0) {
@@ -65,7 +58,7 @@ function App(): JSX.Element {
   return (
     <>
       <ToastContainer />
-      <FileUploader onDropFiles={onDropFiles} />
+      <FileUploader files={files} setFiles={setFiles} />
       <PasswordField password={password} setPassword={setPassword} />
       <OutputPath path={path} setPath={setPath} />
 
@@ -75,6 +68,9 @@ function App(): JSX.Element {
         </button>
         <button className="data-button" disabled={path.length == 0} onClick={openOutputPath}>
           {translate(TranslationKey.OPEN_DIRECTORY)}
+        </button>
+        <button className="data-button" disabled={files.length == 0} onClick={() => setFiles([])}>
+          {translate(TranslationKey.CLEAR_ATTACHMENT_LIST)}
         </button>
       </div>
     </>

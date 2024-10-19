@@ -26,7 +26,8 @@ export enum TranslationKey {
     LOAD_PDF_FILES = 'load_pdf_files',
     PASSWORD_LABEL = 'password_label',
     PASSWORD_PLACEHOLDER = 'password_placeholder',
-    PASSWORD_TOOLTIP = 'password_tooltip'
+    PASSWORD_TOOLTIP = 'password_tooltip',
+    CLEAR_ATTACHMENT_LIST = 'clear_attachment_list'
 }
 
 interface TranslationContextInterface {
@@ -153,8 +154,18 @@ const translations: Translations = {
             + "Пожалуйста, убедитесь, что пароли файлов являются стандартными.",
         [Language.HI]: "यदि PDF फ़ाइलों में पासवर्ड हैं, तो आपको इस फ़ील्ड को सक्षम करना होगा और पासवर्ड दर्ज करना होगा। "
             + "कृपया सुनिश्चित करें कि फ़ाइल पासवर्ड मानक हैं।"
+    },
+    [TranslationKey.CLEAR_ATTACHMENT_LIST]: {
+        [Language.EN]: "Clear attachments",
+        [Language.PT]: "Apagar anexos",
+        [Language.ES]: "Borrar archivos adjuntos",
+        [Language.ZH]: "清除附件",
+        [Language.JA]: "添付ファイルをクリア",
+        [Language.FR]: "Effacer les pièces jointes",
+        [Language.DE]: "Anhänge löschen",
+        [Language.RU]: "Очистить вложения",
+        [Language.HI]: "संलग्नक साफ़ करें"
     }
-    
 };
 
 const TranslationContext = createContext<TranslationContextInterface | undefined>(undefined);
