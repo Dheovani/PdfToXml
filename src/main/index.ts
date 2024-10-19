@@ -42,7 +42,7 @@ let currentLanguage: Language = Language.PT;
  *    description: (.+?) - [REQUIRED] Accepts and undefined amount of any characters,
  *    doc: (\d{12})? - [OPTIONAL] Accepts up to twelve digits,
  *    value: ([\d.,]+)? - [OPTIONAL] Accepts one or more digits, dots and semicolons,
- *    cd: ([CD]\s)? - [OPTIONAL] Accepts only the characters 'C' or 'D',
+ *    dc: ([CD]\s)? - [OPTIONAL] Accepts only the characters 'C' or 'D',
  *    value2: ([\d.,]+)? - [OPTIONAL] Accepts one or more digits, dots and semicolons
  * }
  * 
