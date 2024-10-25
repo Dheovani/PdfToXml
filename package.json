@@ -27,7 +27,6 @@
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
     "@mui/material": "^6.1.4",
-    "electron-compile": "^6.4.4",
     "electron-squirrel-startup": "^1.0.1",
     "pdfjs-dist": "^4.7.76",
     "xlsx": "^0.18.5"
